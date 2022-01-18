@@ -6,13 +6,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
 
 public class ControlCircle extends Application {
     private final CirclePane circlePane = new CirclePane();
@@ -30,6 +30,13 @@ public class ControlCircle extends Application {
             public void handle(ActionEvent event) {
                 circlePane.shrink();
             }
+        });
+        // on key events
+        borderPane.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY)
+                circlePane.enlarge();
+            else if (mouseEvent.getButton() == MouseButton.SECONDARY)
+                circlePane.shrink();
         });
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().addAll(enlargeBtn, shrinkBtn);

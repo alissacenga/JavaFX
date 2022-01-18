@@ -4,8 +4,8 @@ public class TestLambda {
     public static void main(String[] args) {
         TestLambda obj = new TestLambda();
         obj.setAction1(() -> System.out.println("Hello from T1 foo method"));
-        obj.setAction2(nr -> System.out.println("Hello from T2 bar method, got value " + nr));
-        obj.setAction3((nr1, nr2) -> nr1 * nr2);
+        obj.setAction2((int nr) -> System.out.println("Hello from T2 bar method, got value " + nr));
+        obj.setAction3((int nr1, int nr2) -> nr1 * nr2);
     }
 
     public void setAction1(T1 t1) {
