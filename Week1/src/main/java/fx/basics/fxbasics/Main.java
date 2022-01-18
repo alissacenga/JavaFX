@@ -1,14 +1,19 @@
 package fx.basics.fxbasics;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -40,11 +45,18 @@ public class Main extends Application {
             case 9:
                 displayTaichi(stage);
                 break;
+            case 18:
+                displayCubeFunction(stage);
+                break;
             default:
                 System.out.println("Exercise not available, feel free to help!");
                 System.exit(0);
         }
         stage.show();
+    }
+
+    private void displayCubeFunction(Stage stage) {
+        
     }
 
     private void displayTaichi(Stage stage) {
@@ -103,7 +115,7 @@ public class Main extends Application {
         double x, y;
         double radius = 75;
         for (int i = 0; i < str.length(); i++) {
-            x = 225 + radius * Math.sin(Math.toRadians(angle));
+            x = 225 + radius * Math.sin(Math.toRadians(angle)); // or degrees × π/180 either way is the same
             y = 225 - radius * Math.cos(Math.toRadians(angle));
             Text text = new Text(x, y, String.valueOf(str.charAt(i)));
             text.setFont(font);
