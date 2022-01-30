@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+
 public class User {
     private static final ObservableList<User> users = FXCollections.observableArrayList(
             new User("Bingus", "1234", Role.LIBRARIAN),
@@ -25,9 +27,12 @@ public class User {
 
     public static void deleteIndices(ObservableList<Integer> selectedIndices) {
         // this is wrong solution
-        // WHY? HOW to solve it?
+        // WHY?
+        ArrayList<User> list = new ArrayList<>();
         for(int i: selectedIndices)
-            users.remove(i);
+            list.add(users.get(i));
+        for (User user: list)
+            users.remove(user);
     }
 
     public String getUsername() {
@@ -53,7 +58,8 @@ public class User {
     public void setRole(Role role) {
         this.role.set(role);
     }
-    public void create() {
+    public boolean create() {
         users.add(this);
+        return true;
     }
 }
