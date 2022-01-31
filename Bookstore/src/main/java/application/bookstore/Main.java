@@ -24,7 +24,7 @@ public class Main extends Application {
         User manager = new User("manager", "Test2022", Role.MANAGER);
         User librarian = new User("librarian", "Test2022", Role.LIBRARIAN);
         try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("users.ser"));
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(User.FILE_PATH));
             outputStream.writeObject(admin);
             outputStream.writeObject(manager);
             outputStream.writeObject(librarian);
@@ -33,7 +33,7 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("authors.ser"))) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(Author.FILE_PATH))) {
             outputStream.writeObject(new Author("Test1", "Test1"));
             outputStream.writeObject(new Author("Test2", "Test2"));
             outputStream.writeObject(new Author("Test3", "Test3"));

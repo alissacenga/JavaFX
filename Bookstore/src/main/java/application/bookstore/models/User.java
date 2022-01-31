@@ -8,6 +8,7 @@ public class User implements Serializable, BaseModel {
     private String username;
     private String password;
     private Role role;
+    public static final String FILE_PATH = "data/users.ser";
     @Serial
     private static final long serialVersionUID = 1234567L;
     public User() {}
@@ -72,7 +73,7 @@ public class User implements Serializable, BaseModel {
     public static ArrayList<User> getUsers () {
         if (users.size() == 0){
             try {
-                ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("users.ser"));
+                ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILE_PATH));
                 while (true) {
                     User temp = (User) inputStream.readObject();
                     if (temp == null)
@@ -80,7 +81,10 @@ public class User implements Serializable, BaseModel {
                     users.add(temp);
                 }
                 inputStream.close();
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (EOFException eofException) {
+                System.out.println("End of file reached!");
+            }
+            catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -91,6 +95,11 @@ public class User implements Serializable, BaseModel {
     public boolean saveInFile() {
         // write the logic that saves a user in the file
         // return true if no exception happened, otherwise false
+        return false;
+    }
+
+    @Override
+    public boolean deleteFromFile() {
         return false;
     }
 }
