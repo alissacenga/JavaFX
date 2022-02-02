@@ -1,12 +1,9 @@
 package application.bookstore.models;
 
-import application.bookstore.auxiliaries.CustomObjectOutputStream;
-import javafx.collections.ObservableList;
-
 import java.io.*;
 import java.util.ArrayList;
 
-public class Author implements BaseModel, Serializable {
+public class Author extends BaseModel implements Serializable {
     @Serial
     private static final long serialVersionUID = 1234567L;
     private String firstName;
@@ -59,27 +56,14 @@ public class Author implements BaseModel, Serializable {
         return getFirstName() + " " + getLastName();
     }
 
-    @Override
     public boolean saveInFile() {
-        if (!isValid())
-            return false;
-        try {
-            ObjectOutputStream outputStream;
-            FileOutputStream fileOutputStream = new FileOutputStream(DATA_FILE, true);
-            if (DATA_FILE.length() == 0)
-                outputStream = new ObjectOutputStream(fileOutputStream);
-            else
-                outputStream = new CustomObjectOutputStream(fileOutputStream);
-            outputStream.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        authors.add(this);
-        return true;
+        boolean saved = super.save(Author.DATA_FILE);
+        if (saved)
+            authors.add(this);
+        return saved;
     }
 
-    private boolean isValid() {
+    public boolean isValid() {
         return getFirstName().length() > 0 && getLastName().length() > 0;
     }
 
@@ -117,7 +101,7 @@ public class Author implements BaseModel, Serializable {
         return authors;
     }
 
-    private static void overwriteCurrentListToFile() throws IOException {
+    public static void overwriteCurrentListToFile() throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream(DATA_FILE, false);
         ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
         for (Author author: getAuthors())

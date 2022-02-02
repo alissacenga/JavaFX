@@ -1,15 +1,14 @@
 package application.bookstore.controllers;
 
 import application.bookstore.models.Author;
-import application.bookstore.models.User;
 import application.bookstore.views.AuthorView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.SortEvent;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AuthorController {
@@ -23,25 +22,40 @@ public class AuthorController {
     }
 
     private void setEditListener() {
-
-        authorView.getTableView().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            System.out.println(newSelection);
+        // anonymous inner class
+        authorView.getFirstNameCol().setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Author, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Author, String> event) {
+                Author authorToEdit = event.getRowValue();
+                int index = Author.getAuthors().indexOf(authorToEdit);
+                Author.getAuthors().get(index).setFirstName(event.getNewValue());
+            }
         });
-
+        // with lambda now
+        authorView.getLastNameCol().setOnEditCommit(event -> {
+            Author authorToEdit = event.getRowValue();
+            int index = Author.getAuthors().indexOf(authorToEdit);
+            Author.getAuthors().get(index).setLastName(event.getNewValue());
+        });
+        // if the user clicks edit button, save the changes into the file
         authorView.getEditBtn().setOnAction(e -> {
-            System.out.println(authorView.getTableView().focusModelProperty().get().getFocusedItem());
-            for(Author author: authorView.getTableView().getItems())
-                System.out.println(author);
+            try {
+                Author.overwriteCurrentListToFile();
+                authorView.getResultLabel().setText("Authors were updated successfully");
+            } catch (IOException ex) {
+                authorView.getResultLabel().setText("Writing authors to the file failed!");
+                ex.printStackTrace();
+            }
         });
     }
 
     private void setSearchListener() {
-        authorView.getClearBtn().setOnAction(e -> {
-            authorView.getSearchField().setText("");
+        authorView.getSearchView().getClearBtn().setOnAction(e -> {
+            authorView.getSearchView().getSearchField().setText("");
             authorView.getTableView().setItems(FXCollections.observableArrayList(Author.getAuthors()));
         });
-        authorView.getSearchBtn().setOnAction(e -> {
-            String searchText = authorView.getSearchField().getText();
+        authorView.getSearchView().getSearchBtn().setOnAction(e -> {
+            String searchText = authorView.getSearchView().getSearchField().getText();
             ArrayList<Author> searchResults = Author.getSearchResults(searchText);
             authorView.getTableView().setItems(FXCollections.observableArrayList(searchResults));
         });

@@ -3,12 +3,13 @@ package application.bookstore.models;
 import java.io.*;
 import java.util.ArrayList;
 
-public class User implements Serializable, BaseModel {
+public class User extends BaseModel implements Serializable {
     private static final ArrayList<User> users = new ArrayList<>();
     private String username;
     private String password;
     private Role role;
     public static final String FILE_PATH = "data/users.ser";
+    private static final File DATA_FILE = new File(FILE_PATH);
     @Serial
     private static final long serialVersionUID = 1234567L;
     public User() {}
@@ -95,6 +96,14 @@ public class User implements Serializable, BaseModel {
     public boolean saveInFile() {
         // write the logic that saves a user in the file
         // return true if no exception happened, otherwise false
+        boolean saved = super.save(User.DATA_FILE);
+        if (saved)
+            users.add(this);
+        return saved;
+    }
+
+    @Override
+    public boolean isValid() {
         return false;
     }
 

@@ -20,33 +20,28 @@ public class AuthorView extends View{
     private final HBox formPane = new HBox();
     private final TextField firstNameField = new TextField();
     private final TextField lastNameField = new TextField();
-    private final TextField searchField = new TextField();
-    private final Button searchBtn = new SearchButton();
-    private final Button clearBtn = new ClearButton();
     private final Button saveBtn = new CreateButton();
     private final Button deleteBtn = new DeleteButton();
     private final Button editBtn = new EditButton();
+    private final TableColumn<Author, String> firstNameCol = new TableColumn<>("First name");
+    private final TableColumn<Author, String> lastNameCol = new TableColumn<>("Last name");
+    private final Label resultLabel = new Label("");
+    private final SearchView searchView = new SearchView("Search for an author");
+
+    public SearchView getSearchView() {
+        return searchView;
+    }
+
+    public TableColumn<Author, String> getFirstNameCol() {
+        return firstNameCol;
+    }
+
+    public TableColumn<Author, String> getLastNameCol() {
+        return lastNameCol;
+    }
 
     public Button getEditBtn() {
         return editBtn;
-    }
-
-    private final Label resultLabel = new Label("");
-
-
-    public Button getClearBtn() {
-        return clearBtn;
-    }
-    private final HBox searchPane = new HBox();
-
-
-
-    public Button getSearchBtn() {
-        return searchBtn;
-    }
-
-    public TextField getSearchField() {
-        return searchField;
     }
 
     public Button getDeleteBtn() {
@@ -76,18 +71,7 @@ public class AuthorView extends View{
     public AuthorView() {
         setTableView();
         setForm();
-        setSearchForm();
         new AuthorController(this);
-    }
-
-    private void setSearchForm() {
-        Label label = new Label("Search for a book in our bookstore", searchField);
-        label.setContentDisplay(ContentDisplay.RIGHT);
-        searchPane.setPadding(new Insets(20));
-        searchPane.setSpacing(20);
-        searchPane.setAlignment(Pos.CENTER);
-        searchField.setPromptText("Type sth ...");
-        searchPane.getChildren().addAll(label, searchBtn, clearBtn);
     }
 
     @Override
@@ -98,7 +82,7 @@ public class AuthorView extends View{
         vBox.setSpacing(5);
         vBox.getChildren().addAll(formPane, resultLabel);
         borderPane.setBottom(vBox);
-        borderPane.setTop(searchPane);
+        borderPane.setTop(searchView.getSearchPane());
         return borderPane;
     }
 
@@ -118,13 +102,11 @@ public class AuthorView extends View{
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableView.setEditable(true);
         tableView.setItems(FXCollections.observableArrayList(Author.getAuthors()));
-        TableColumn<Author, String> firstNameCol = new TableColumn<>("First name");
         firstNameCol.setCellValueFactory(
                 new PropertyValueFactory<>("firstName")
         );
         firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        TableColumn<Author, String> lastNameCol = new TableColumn<>("Last name");
         lastNameCol.setCellValueFactory(
                 new PropertyValueFactory<>("lastName")
         );
