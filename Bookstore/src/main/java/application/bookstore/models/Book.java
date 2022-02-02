@@ -3,14 +3,16 @@ package application.bookstore.models;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Book extends BaseModel{
+public class Book extends BaseModel implements Serializable{
     private String isbn;
     private String title;
     private float purchasedPrice;
     private float sellingPrice;
     private Author author;
-    private static final String FILE_PATH = "data/authors.ser";
+    private static final String FILE_PATH = "data/books.ser";
     private static final File DATA_FILE = new File(FILE_PATH);
+    @Serial
+    private static final long serialVersionUID = 1234567L;
     private static final ArrayList<Book> books = new ArrayList<>();
     public Book(){}
 

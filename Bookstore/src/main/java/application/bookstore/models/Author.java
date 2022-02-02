@@ -26,10 +26,7 @@ public class Author extends BaseModel implements Serializable {
 
     @Override
     public String toString() {
-        return "Author{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+        return firstName + " " + lastName;
     }
 
     public String getFirstName() {
