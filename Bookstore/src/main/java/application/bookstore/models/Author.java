@@ -1,5 +1,7 @@
 package application.bookstore.models;
 
+import application.bookstore.auxiliaries.FileHandler;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ public class Author extends BaseModel implements Serializable {
 
     private static final ArrayList<Author> authors = new ArrayList<>();
     public static final String FILE_PATH = "data/authors.ser";
-    private static final File DATA_FILE = new File(FILE_PATH);
+    public static final File DATA_FILE = new File(FILE_PATH);
 
     public static ArrayList<Author> getSearchResults(String searchText) {
         // don't do it this way, build a regex
@@ -66,9 +68,11 @@ public class Author extends BaseModel implements Serializable {
 
     @Override
     public boolean deleteFromFile() {
+        // todo take care of books as well
         authors.remove(this);
         try {
-            overwriteCurrentListToFile();
+            FileHandler.overwriteCurrentListToFile(DATA_FILE, getAuthors());
+//            overwriteCurrentListToFile();
         } catch (IOException exception) {
             exception.printStackTrace();
             return false;
@@ -96,12 +100,5 @@ public class Author extends BaseModel implements Serializable {
             }
         }
         return authors;
-    }
-
-    public static void overwriteCurrentListToFile() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(DATA_FILE, false);
-        ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
-        for (Author author: getAuthors())
-            outputStream.writeObject(author);
     }
 }

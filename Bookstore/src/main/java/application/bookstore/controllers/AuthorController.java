@@ -1,5 +1,6 @@
 package application.bookstore.controllers;
 
+import application.bookstore.auxiliaries.FileHandler;
 import application.bookstore.models.Author;
 import application.bookstore.views.AuthorView;
 import javafx.collections.FXCollections;
@@ -40,7 +41,8 @@ public class AuthorController {
         // if the user clicks edit button, save the changes into the file
         authorView.getEditBtn().setOnAction(e -> {
             try {
-                Author.overwriteCurrentListToFile();
+                // todo change it
+                FileHandler.overwriteCurrentListToFile(Author.DATA_FILE, Author.getAuthors());
                 authorView.getResultLabel().setText("Authors were updated successfully");
             } catch (IOException ex) {
                 authorView.getResultLabel().setText("Writing authors to the file failed!");
